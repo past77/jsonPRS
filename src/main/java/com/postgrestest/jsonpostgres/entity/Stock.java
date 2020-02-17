@@ -34,7 +34,5 @@ public class Stock {
     }
 
     public Stock() {
-        RestTemplate rest = new RestTemplate();
-        rest.
     }
 }
