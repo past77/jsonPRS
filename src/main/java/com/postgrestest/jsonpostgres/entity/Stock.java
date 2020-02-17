@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Entity(name = "Stock")
 @Data
-@Table(schema = "stocks", name = "table1")
+@Table(schema = "stocks", name = "stockNYSE")
 public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
