@@ -2,6 +2,7 @@ package com.postgrestest.jsonpostgres.entity;
 
 
 import lombok.Data;
+import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -33,5 +34,7 @@ public class Stock {
     }
 
     public Stock() {
+        RestTemplate rest = new RestTemplate();
+        rest.
     }
 }
