@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity(name = "Result")
 @Data
-@Table(schema = "stocks", name = "table2")
+@Table(schema = "stocks", name = "resultsNYSE")
 public class Result {
     @Id
     @GeneratedValue
