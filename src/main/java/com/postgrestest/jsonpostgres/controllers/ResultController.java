@@ -7,6 +7,7 @@ import com.postgrestest.jsonpostgres.repositories.ResultRepository;
 import com.postgrestest.jsonpostgres.repositories.StockRepository;
 
 
+import com.postgrestest.jsonpostgres.services.ResultService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -27,23 +28,30 @@ import java.util.List;
 @RestController
 public class ResultController {
 
+    private final String apiLink = "https://morningstar1.p.rapidapi.com/endofdayquotes/history?Mic=XNAS&EndOfDayQuoteTicker=126.1.";
+    private final String key = "32b01b33aemsh0cdca1e2035edeap131d08jsn449d7afd12d2";
+    private final String host = "morningstar1.p.rapidapi.com";
+
     private static final Logger logger = LoggerFactory.getLogger(ResultController.class);
 
     private ResultRepository resultRepository;
+    private ResultService resultService;
+
 
     @Autowired
-    public ResultController(ResultRepository resultRepository) {
+    public ResultController(ResultRepository resultRepository, ResultService resultService) {
+        this.resultService = resultService;
         this.resultRepository = resultRepository;
     }
 
-    @RequestMapping("stock")
-    public void json() {
 
+
+    @RequestMapping("result")
+    public void getHistoryRequest(String symbol) {
         URL url = null;
-        String key = "32b01b33aemsh0cdca1e2035edeap131d08jsn449d7afd12d2";
-        String host = "morningstar1.p.rapidapi.com";
+        symbol = "Aasfewgrehewhrth";
         try {
-            url = new URL("https://morningstar1.p.rapidapi.com/endofdayquotes/history?Mic=XNAS&EndOfDayQuoteTicker=126.1.MSFT");
+            url = new URL(apiLink + symbol);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -57,21 +65,13 @@ public class ResultController {
                     .header("accept","string")
                     .build();
 
-            HttpResponse<String> response = client.send(request,
-                    HttpResponse.BodyHandlers.ofString());
-
-            String data = response.body();
-            JSONObject obj = new JSONObject(data);
-
-            JSONArray arr = obj.getJSONArray("results");
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            List<Result> stocks = objectMapper.readValue(arr.toString(), new TypeReference<List<Result>>(){});
-            resultRepository.saveAll(stocks);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+                HttpResponse<String> response = client.send(request,
+                        HttpResponse.BodyHandlers.ofString());
+            resultRepository.saveAll(resultService.method(response));
+        } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
         }
-    }
+
+
+        }
 }

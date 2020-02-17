@@ -5,7 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-@Entity(name = "Result")
+@Entity(name = "result")
 @Data
 @Table(schema = "stocks", name = "resultsNYSE")
 public class Result {
@@ -18,9 +18,12 @@ public class Result {
     private String low;
     private String last;
     private int volume;
+    private String symbol;
+    @ManyToOne
+    @JoinColumn(name = "stock_id")
+    private Stock stock;
 
     public Result() {
     }
-    @ManyToOne
-    private Stock stock;
+
 }
