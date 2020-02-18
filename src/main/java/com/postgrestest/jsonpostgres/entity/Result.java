@@ -19,9 +19,6 @@ public class Result {
     private String last;
     private int volume;
     private String symbol;
-    @ManyToOne
-    @JoinColumn(name = "stock_id")
-    private Stock stock;
 
     public Result() {
     }
